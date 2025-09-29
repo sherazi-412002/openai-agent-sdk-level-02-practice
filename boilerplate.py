@@ -1,7 +1,7 @@
 # -----------------------------------------
 # Import Required Libraries
 # -----------------------------------------
-from agents import Agent, Runner, OpenAIChatCompletionsModel, set_tracing_disabled,function_tool,ModelSettings
+from agents import Agent, Runner, OpenAIChatCompletionsModel, set_tracing_disabled
 from openai import AsyncOpenAI
 import os
 from dotenv import load_dotenv
@@ -29,10 +29,7 @@ external_model = OpenAIChatCompletionsModel(
     openai_client=external_client
 )
 
-@function_tool
-def get_weather(city: str) -> str:
-    """Returns weather info for the specified city."""
-    return f" {city} is Sunny!."
+
 
 # -----------------------------------------
 # Agent Definition
@@ -40,11 +37,6 @@ def get_weather(city: str) -> str:
 agent = Agent(
     name="Haiku Agent",
     instructions="You are a helpful assistant.",
-    model=external_model,
-    tools=[get_weather],     
-    # model_settings=ModelSettings(
-    #    tool_choice="none"  
-    # )  
 )
 
 # -----------------------------------------
@@ -53,9 +45,7 @@ agent = Agent(
 
 result = Runner.run_sync(
     agent,
-    "hello?",  # user input
-    max_turns=1
-    
+    "Hi?",  # user input
 )
 
 # Print final agent output
